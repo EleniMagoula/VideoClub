@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using VideoClub.Core.Entities;
 using VideoClub.Core.Interfaces;
 using VideoClub.Infrastructure.Data;
@@ -21,10 +23,29 @@ namespace VideoClub.Common.Services
             _context = context;
         }
 
-        public async Task Add(Movie movie)
+        public async Task Add(Movie movie, int availableDVDs)
         {
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+
+            using (var dbTran = _context.Database.BeginTransaction()) // Transaction example 
+            {
+                try
+                {
+                    for (int i = 0; i < availableDVDs; i++)
+                    {
+                        var dvd = new DVD(movie);
+                        movie.DVDs.Add(dvd);
+                    }
+
+                    _context.Movies.Add(movie);
+                    await _context.SaveChangesAsync();
+
+                    dbTran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbTran.Rollback(); // if something goes wrong, it rollbacks any already occured changes before the exception
+                }
+            }
         }
 
         public async Task<Movie> GetMovieById(int id)

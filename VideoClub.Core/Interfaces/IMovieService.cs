@@ -10,6 +10,6 @@ namespace VideoClub.Core.Interfaces
     public interface IMovieService
     {
         Task<Movie> GetMovieById(int id);
-        Task Add(Movie movie);
+        Task Add(Movie movie, int availableDVDs);
     }
 }

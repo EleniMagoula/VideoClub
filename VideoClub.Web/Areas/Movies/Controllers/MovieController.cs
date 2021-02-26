@@ -92,12 +92,7 @@ namespace VideoClub.Web.Areas.Movies.Controllers
             //var movie = new Movie(movieForm.Title, movieForm.Description, movieForm.Genre/*, movieForm.AvailableDVDs*/);
             var movie = _mapper.Map<Movie>(movieForm);
 
-            for (int i = 0; i < movieForm.AvailableDVDs; i++)
-            {
-                var dvd = new DVD(movie);
-                movie.DVDs.Add(dvd);
-            }
-            await _movieDb.Add(movie);
+            await _movieDb.Add(movie, movieForm.AvailableDVDs);
 
             _logger.Writer.Information("Admin {adminName} created a new movie {movieTitle}", User.Identity.Name, movie.Title);
 
