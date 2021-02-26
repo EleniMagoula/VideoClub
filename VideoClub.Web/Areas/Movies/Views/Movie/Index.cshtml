@@ -1,0 +1,105 @@
+﻿@model VideoClub.Infrastructure.Models.PaginationModel<VideoClub.Web.Areas.Movies.Models.MovieViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ταινίες</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    @Html.ActionLink("Δημιουργία νέας ταινίας", "Create", "Movie", new { @class = "btn btn-primary" })
+}
+
+@using (Html.BeginForm("Index", "Movie", FormMethod.Get, new { @class = "form-inline", @style = "margin-top: 10px; margin-bottom: 10px;" }))
+{
+    <div class="form-group">
+        <label for="movieGenre">Είδος:&nbsp;</label>
+        @Html.DropDownList("movieGenre", new SelectList(ViewBag.Genres), "--Όλα τα είδη--", new { @class = "btn btn-default dropdown-toggle" })
+    </div>
+    <div class="form-group">
+        <label for="filterTitle">Τίτλος:&nbsp;</label>
+        @Html.TextBox("filterTitle", null, new { @type = "text", @class = "form-control", @placeholder = "Πληκτρολογήστε τίτλο" })
+    </div>
+    <div class="form-group">
+        <button type="submit" value="Filter" class="btn btn-success">Αναζήτηση</button>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Τίτλος</th>
+            <th scope="col">Περιγραφή</th>
+            <th scope="col">Είδος</th>
+            <th scope="col">Διαθεσιμότητα</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Items)
+        {
+            <tr>
+                <td>@movie.Id</td>
+                <td>@movie.Title</td>
+                <td>@movie.Description</td>
+                <td>@movie.Genre</td>
+                <td>@movie.DVDs.Where(dvd => dvd.IsAvailable).Count()</td>
+                @if (movie.DVDs.Where(dvd => dvd.IsAvailable).Count() > 0 && User.IsInRole("Admin"))
+                {
+                    <td>@Html.ActionLink("Κράτηση ταινίας", "CreateFromMovieList", "Booking", new { area = "Bookings", movieId = movie.Id }, new { @class = "btn btn-success" })</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.TotalPagesCount != 0)
+{
+    <p>Page @(Model.PageNum) out of @Model.TotalPagesCount</p>
+
+    <div class="btn-group" role="group">
+        @if (Model.PageNum == Model.TotalPagesCount)
+        {
+            if (Model.TotalPagesCount == 1)
+            {
+                <button type="button" class="btn btn-default disabled glyphicon glyphicon-menu-left" id="prevPage"></button>
+                <button type="button" class="btn btn-default disabled glyphicon glyphicon-menu-right" id="nextPage"></button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-default glyphicon glyphicon-menu-left" id="prevPage"></button>
+                <button type="button" class="btn btn-default disabled glyphicon glyphicon-menu-right" id="nextPage"></button>
+            }
+        }
+        else if (Model.PageNum == 1)
+        {
+            <button type="button" class="btn btn-default disabled glyphicon glyphicon-menu-left" id="prevPage"></button>
+            <button type="button" class="btn btn-default glyphicon glyphicon-menu-right" id="nextPage"></button>
+        }
+        else
+        {
+            <button type="button" class="btn btn-default glyphicon glyphicon-menu-left" id="prevPage"></button>
+            <button type="button" class="btn btn-default glyphicon glyphicon-menu-right" id="nextPage"></button>
+        }
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        var href = new URL(window.location.href); // Saves current URL link to a variable with all (if any) of it's parameters. ex. ?page=1
+
+        // Both check if the button pressed has NOT "disabled" as a class, changes the ?page parameter to page-1 (previous) or page+1 (next) respectively and then redirects you to it. Else do nothing.
+        document.getElementById('prevPage').onclick = function () {
+            if (!this.classList.contains('disabled')) {
+                href.searchParams.set('page', @Convert.ToInt32(Model.PageNum - 1));
+                window.location.href = href;
+            } else {}
+        };
+        document.getElementById('nextPage').onclick = function () {
+            if (!this.classList.contains('disabled')) {
+                href.searchParams.set('page', @Convert.ToInt32(Model.PageNum + 1));
+                window.location.href = href;
+            } else { }
+        };
+    </script>
+}

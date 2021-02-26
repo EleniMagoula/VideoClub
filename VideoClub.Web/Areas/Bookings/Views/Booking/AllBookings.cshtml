@@ -1,0 +1,45 @@
+﻿@model VideoClub.Web.Areas.Bookings.Models.BookingListViewModel
+@{
+    ViewBag.Title = "AllBookings";
+}
+
+<h2>Ιστορικό κρατήσεων</h2>
+
+@if (Model == null)
+{
+    <h4 class="text-center text-danger">Δε βρέθηκαν κρατήσεις</h4>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id DVD</th>
+                <th scope="col">Username πελάτη</th>
+                <th scope="col">Αναμενόμενη ημ/νία επιστροφής</th>
+                <th scope="col">Ημ/νία που επιστράφηκε</th>
+                <th scope="col">Σχόλια διαχειριστή</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.DVDId</td>
+                    <td>@booking.Customer.UserName</td>
+                    <td>@booking.ToBeReturned.ToShortDateString()</td>
+                    @if (booking.DateOfReturn == null)
+                    {
+                        <td>Δεν έχει επιστραφεί ακόμα</td>
+                    }
+                    else
+                    {
+                        <td>@booking.DateOfReturn.Value.ToShortDateString()</td>
+                    }
+                    <td>@booking.Comments</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

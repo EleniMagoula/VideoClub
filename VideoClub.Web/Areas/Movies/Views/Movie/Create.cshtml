@@ -1,0 +1,40 @@
+﻿@model VideoClub.Web.Areas.Movies.Models.MovieBindingModel
+@{
+    ViewBag.Title = "MovieForm";
+}
+
+<h2>Πρόσθεσε νέα ταινία</h2>
+
+<a href="#" onclick="history.go(-1);"><i class="fas fa-arrow-alt-circle-left fa-2x"></i></a>
+
+@using (Html.BeginForm("Create", "Movie"))
+{
+    @Html.AntiForgeryToken()
+    @*@Html.HiddenFor(m => m.Id)*@
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MovieTitle, "Τίτλος ταινίας")
+        @Html.TextBoxFor(m => m.MovieTitle, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.MovieTitle)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, "Περιγραφή")
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Genre, "Είδος")
+        @Html.EnumDropDownListFor(m => m.Genre, "Επιλογή είδους", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Genre)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AvailableDVDs, "Προσθήκη DVD για την ταινία")
+        @Html.TextBoxFor(m => m.AvailableDVDs, new { @class = "form-control", @type = "number" })
+        @Html.ValidationMessageFor(m => m.AvailableDVDs)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Αποθήκευση ταινίας</button>
+}

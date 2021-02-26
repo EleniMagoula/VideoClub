@@ -1,0 +1,32 @@
+﻿@model VideoClub.Web.Areas.Bookings.Models.BookingsPerCustomerViewModel
+@{
+    ViewBag.Title = "CustomerBookings";
+}
+
+<h2>Κρατήσεις για τον πελάτη @Model.Customer.FirstName @Model.Customer.LastName</h2>
+
+<a href="#" onclick="history.go(-1);"><i class="fas fa-arrow-alt-circle-left fa-2x"></i></a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id DVD</th>
+            <th scope="col">Ημ/νία Κράτησης</th>
+            <th scope="col">Ημ/νία Επιστροφής</th>
+            <th scope="col">Σχόλια διαχειριστή</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model.Bookings)
+        {
+            <tr>
+                <td>@booking.Id</td>
+                <td>@booking.DVDId</td>
+                <td>@booking.DayOfBooking.ToString("d/M/yyyy")</td>
+                <td>@booking.ToBeReturned.ToString("d/M/yyyy")</td>
+                <td>@booking.Comments</td>
+            </tr>
+        }
+    </tbody>
+</table>

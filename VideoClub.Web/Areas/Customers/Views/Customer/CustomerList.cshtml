@@ -1,0 +1,34 @@
+﻿@model VideoClub.Web.Areas.Customers.Models.CustomerListViewModel
+@{
+    ViewBag.Title = "CustomerList";
+}
+
+<h2>Πελάτες</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Όνομα</th>
+            <th scope="col">Επώνυμο</th>
+            <th scope="col">Ενεργές Κρατήσεις</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model.Customers)
+        {
+            <tr>
+                <td>@customer.UserName</td>
+                <td>@customer.FirstName</td>
+                <td>@customer.LastName</td>
+                <td>@customer.ActiveBookings.Count()</td>
+                <td>@Html.ActionLink("Κράτηση για πελάτη", "CreateFromCustomerList", "Booking", new { area = "Bookings", customerId = customer.Id }, new { @class = "btn btn-success" })</td>
+                @if (customer.ActiveBookings.Count() > 0)
+                {
+                    <td>@Html.ActionLink("Αναλυτικά για κρατήσεις", "CustomerBookings", "Booking", new { area = "Bookings", customerId = customer.Id }, new { @class = "btn btn-info" })</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+

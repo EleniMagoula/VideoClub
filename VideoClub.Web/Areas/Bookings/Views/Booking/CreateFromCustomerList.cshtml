@@ -1,0 +1,32 @@
+﻿@model VideoClub.Web.Areas.Bookings.Models.BookingBindingModel
+@{
+    ViewBag.Title = "CreateFromCustomerList";
+}
+
+<h2>Κράτηση ταινίας</h2>
+
+<a href="#" onclick="history.go(-1);"><i class="fas fa-arrow-alt-circle-left fa-2x"></i></a>
+
+@using (Html.BeginForm("CreateFromCustomerList", "Booking"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(b => b.CustomerId, "Id Πελάτη")
+        @Html.TextBoxFor(b => b.CustomerId, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(b => b.DVDId, "Τίτλος ταινίας")
+        @Html.DropDownListFor(b => b.DVDId, new SelectList(Model.DVDs, "Id", "Movie.Title"), "--Ταινία--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(b => b.DVDId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(b => b.Comments, "Σχόλια")
+        @Html.TextBoxFor(b => b.Comments, new { @class = "form-control" })
+        @Html.ValidationMessageFor(b => b.Comments)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Κράτηση</button>
+}

@@ -1,0 +1,38 @@
+﻿@model VideoClub.Web.Areas.Bookings.Models.BookingListViewModel
+@{
+    ViewBag.Title = "ActiveBookings";
+}
+
+<h2>Ενεργές Κρατήσεις</h2>
+
+@if (Model.Bookings.Count() < 1)
+{
+    <h4 class="text-center text-danger">Δε βρέθηκαν ενεργές κρατήσεις</h4>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Τίτλος ταινίας</th>
+                <th scope="col">Id DVD</th>
+                <th scope="col">Username πελάτη</th>
+                <th scope="col">Ημ/νία Επιστροφής</th>
+                <th scope="col">Σχόλια διαχειριστή</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.DVD.Movie.Title</td>
+                    <td>@booking.DVDId</td>
+                    <td>@booking.Customer.UserName</td>
+                    <td>@booking.ToBeReturned.ToString("d/M/yyyy")</td>
+                    <td>@booking.Comments</td>
+                    <td>@Html.ActionLink("Επιστροφή ταινίας", "Return", "Booking", new { bookingId = booking.Id }, new { @class = "btn btn-warning" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
