@@ -265,6 +265,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootbox.js\bootbox.js" />
+    <Content Include="Scripts\bootbox.js\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Movies\Views\web.config" />
@@ -282,6 +284,7 @@
     <Content Include="Areas\Bookings\Views\Booking\AllBookings.cshtml" />
     <Content Include="Areas\Bookings\Views\Booking\Return.cshtml" />
     <Content Include="Areas\Movies\Views\Movie\Index.cshtml" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\fontawesome\all.js" />
     <Content Include="Scripts\fontawesome\all.min.js" />
