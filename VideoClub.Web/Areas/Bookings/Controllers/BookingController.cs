@@ -150,21 +150,33 @@ namespace VideoClub.Web.Areas.Bookings.Controllers
             return View(bookingList);
         }
 
-        public async Task<ActionResult> Return(int bookingId)
-        {
-            var booking = await _bookingDb.FindById(bookingId);
-            //var bindingModel = new BookingBindingModel(booking.CustomerId, booking.DVDId, booking.Comments)
-            //{
-            //    Id = booking.Id
-            //};
+        //public async Task<ActionResult> Return(int bookingId)
+        //{
+        //    var booking = await _bookingDb.FindById(bookingId);
+        //    //var bindingModel = new BookingBindingModel(booking.CustomerId, booking.DVDId, booking.Comments)
+        //    //{
+        //    //    Id = booking.Id
+        //    //};
 
-            var bindingModel = _mapper.Map<BookingBindingModel>(booking);
+        //    var bindingModel = _mapper.Map<BookingBindingModel>(booking);
 
-            return View(bindingModel);
-        }
+        //    return View(bindingModel);
+        //}
+
+        //[HttpPost]
+        //public async Task<ActionResult> Returned(int bookingId)
+        //{
+        //    var booking = await _bookingDb.FindByIdWithDVD(bookingId);
+
+        //    booking.Returned();
+
+        //    await _bookingDb.Update();
+
+        //    return RedirectToAction("ActiveBookings");
+        //}
 
         [HttpPost]
-        public async Task<ActionResult> Returned(int bookingId)
+        public async Task<ActionResult> Return(int bookingId)
         {
             var booking = await _bookingDb.FindByIdWithDVD(bookingId);
 
@@ -172,8 +184,7 @@ namespace VideoClub.Web.Areas.Bookings.Controllers
 
             await _bookingDb.Update();
 
-            return RedirectToAction("ActiveBookings");
+            return Json(new { msg = "Successfully returned" }, JsonRequestBehavior.AllowGet);
         }
     }
-
 }

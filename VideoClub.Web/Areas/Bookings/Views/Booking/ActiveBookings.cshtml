@@ -11,7 +11,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" id="activeBookings">
         <thead>
             <tr>
                 <th scope="col">Τίτλος ταινίας</th>
@@ -30,9 +30,59 @@ else
                     <td>@booking.Customer.UserName</td>
                     <td>@booking.ToBeReturned.ToString("d/M/yyyy")</td>
                     <td>@booking.Comments</td>
-                    <td>@Html.ActionLink("Επιστροφή ταινίας", "Return", "Booking", new { bookingId = booking.Id }, new { @class = "btn btn-warning" })</td>
+                    @*<td>@Html.ActionLink("Επιστροφή ταινίας", "Return", "Booking", new { bookingId = booking.Id }, new { @class = "btn btn-warning" })</td>*@
+                    <td>
+                        <button class="btn btn-warning js-booking-returned" data-booking-id="@booking.Id">Επιστροφή ταινίας</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".js-booking-returned").click(function (e) {
+                var button = $(e.target);
+
+                bootbox.dialog({
+                    title: 'Confirm Return',
+                    message: '<p>Are you sure?</p>',
+                    size: 'large',
+                    onEscape: true,
+                    backdrop: true,
+                    buttons: {
+                        no: {
+                            label: 'Umm...maybe not',
+                            className: 'btn-default',
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: 'Return',
+                            className: 'btn-danger',
+                            callback: function () {
+                                $.ajax({
+                                    url: "@Url.Action("Return", "Booking", new { Area = "Bookings" })",
+                                    method: "POST",
+                                    data: { bookingId: button.attr("data-booking-id") }
+                                })
+                                    .done(function (response) {
+                                        button.parents("tr").fadeOut(function () {
+                                            bootbox.alert(response.msg);
+                                            $(this).remove;
+                                        });
+                                    })
+                                    .fail(function () {
+                                        bootbox.alert("Bad very bad.");
+                                    });
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+} 

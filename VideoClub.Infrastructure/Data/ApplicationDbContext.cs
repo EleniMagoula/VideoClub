@@ -37,6 +37,11 @@ namespace VideoClub.Infrastructure.Data
                 .WithMany(c => c.Bookings)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.DVDs)
+                .WithRequired(dvd => dvd.Movie)
+                .WillCascadeOnDelete(false);
+
             base.OnModelCreating(modelBuilder);
         }
     }

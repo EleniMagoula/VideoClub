@@ -25,7 +25,7 @@
     </div>
 }
 
-<table class="table">
+<table class="table" id="movies">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -43,11 +43,14 @@
                 <td>@movie.Title</td>
                 <td>@movie.Description</td>
                 <td>@movie.Genre</td>
-                <td>@movie.DVDs.Where(dvd => dvd.IsAvailable).Count()</td>
+                <td id="availableDVDs">@movie.DVDs.Where(dvd => dvd.IsAvailable).Count()</td>
                 @if (movie.DVDs.Where(dvd => dvd.IsAvailable).Count() > 0 && User.IsInRole("Admin"))
                 {
                     <td>@Html.ActionLink("Κράτηση ταινίας", "CreateFromMovieList", "Booking", new { area = "Bookings", movieId = movie.Id }, new { @class = "btn btn-success" })</td>
                 }
+                <td>
+                    <button class="btn btn-danger js-delete-movie" data-movie-id="@movie.Id">Διαγραφή ταινίας</button>
+                </td>
             </tr>
         }
     </tbody>
@@ -85,7 +88,7 @@
 }
 
 @section scripts{
-    <script type="text/javascript">
+    <script>
         var href = new URL(window.location.href); // Saves current URL link to a variable with all (if any) of it's parameters. ex. ?page=1
 
         // Both check if the button pressed has NOT "disabled" as a class, changes the ?page parameter to page-1 (previous) or page+1 (next) respectively and then redirects you to it. Else do nothing.
@@ -101,5 +104,83 @@
                 window.location.href = href;
             } else { }
         };
+
+        // Get current page
+        let page = location.href.split('?').pop();
+
+        // Delete movie
+        $(document).ready(function () {
+
+            // Disable booking button when available dvds == 0
+            //var availability = $("#availableDVDs").html();
+            //if (availability != '0') {
+            //    document.getElementsByClassName("btn-success").removeAttribute('disabled');
+            //}
+
+            @*$("#movies").on("click", ".js-delete-movie", function () {
+                let button = $(this);
+
+                bootbox.confirm("Διαγραφή ταινίας;", function (result) {
+                    if (result) {
+                        $.ajax({
+                            method: "DELETE",
+                            url: "@Url.Action("Delete", "Movie", new { Area = "Movies" })" + "?id=" + button.attr("data-movie-id"),
+                            data: { id: button.attr("data-movie-id") },
+                            success: function (response) {
+                                if (response == 200) {
+                                    alert(response.msg);
+                                    $(el).closest('tr').css('background', 'tomato');
+                                    $(el).closest('tr').fadeOut(800, function () {
+                                        $(this).remove();
+                                    });
+                                } else {
+                                    bootbox.alert('Record not deleted.');
+                                }
+                            }
+                        })
+                    }
+                });
+            });*@
+
+            $(".js-delete-movie").click(function (e) {
+                var button = $(e.target);
+
+                bootbox.dialog({
+                    title: 'Confirm Deletion',
+                    message: '<p>Are you sure?</p>',
+                    size: 'large',
+                    onEscape: true,
+                    backdrop: true,
+                    buttons: {
+                        no: {
+                            label: 'Umm...maybe not',
+                            className: 'btn-default',
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: 'Delete!',
+                            className: 'btn-danger',
+                            callback: function () {
+                                $.ajax({
+                                    url: "@Url.Action("Delete", "Movie", new { Area = "Movies" })" + "/" + button.attr("data-movie-id"),
+                                    method: "DELETE"
+                                })
+                                    .done(function () {
+                                        button.parents("tr").fadeOut(function () {
+                                            $(this).remove();
+                                            location.reload(true);
+                                        });
+                                    })
+                                    .fail(function () {
+                                        bootbox.alert("Bad very bad.");
+                                    });
+                            }
+                        }
+                    }
+                });
+            });
+        });
     </script>
 }
