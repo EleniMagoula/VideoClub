@@ -184,7 +184,7 @@ namespace VideoClub.Web.Areas.Bookings.Controllers
 
             await _bookingDb.Update();
 
-            return Json(new { msg = "Successfully returned" }, JsonRequestBehavior.AllowGet);
+            return Json(new { msg = "Επιστράφηκε επιτυχώς." }, JsonRequestBehavior.AllowGet);
         }
     }
 }

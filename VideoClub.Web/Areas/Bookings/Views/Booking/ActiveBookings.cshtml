@@ -47,21 +47,21 @@ else
                 var button = $(e.target);
 
                 bootbox.dialog({
-                    title: 'Confirm Return',
-                    message: '<p>Are you sure?</p>',
+                    title: 'Επιβεβαίωση επιστροφής',
+                    message: '<p>Επιστροφή;</p>',
                     size: 'large',
                     onEscape: true,
                     backdrop: true,
                     buttons: {
                         no: {
-                            label: 'Umm...maybe not',
+                            label: 'Άκυρο',
                             className: 'btn-default',
                             callback: function () {
                                 bootbox.hideAll();
                             }
                         },
                         yes: {
-                            label: 'Return',
+                            label: 'Επιστροφή',
                             className: 'btn-danger',
                             callback: function () {
                                 $.ajax({
@@ -76,7 +76,7 @@ else
                                         });
                                     })
                                     .fail(function () {
-                                        bootbox.alert("Bad very bad.");
+                                        bootbox.alert("Επιστροφή απέτυχε. Προσπαθήστε αργότερα.");
                                     });
                             }
                         }
