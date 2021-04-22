@@ -17,7 +17,7 @@
     <AssemblyName>VideoClub.Web</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44376</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -369,10 +369,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Bookings\Views\Bookings\" />
     <Folder Include="Areas\Bookings\Views\Shared\" />
     <Folder Include="Areas\Customers\Views\Shared\" />
-    <Folder Include="Areas\Movies\Views\Movies\" />
     <Folder Include="Areas\Movies\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -420,7 +418,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52111</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://videoclub_eleni.com</IISUrl>
+          <IISUrl>http://localhost:52111/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
