@@ -8,6 +8,8 @@
 @if (User.IsInRole("Admin"))
 {
     @Html.ActionLink("Δημιουργία νέας ταινίας", "Create", "Movie", new { @class = "btn btn-primary" })
+
+    //Html.RenderAction("RenderCreate", "Movie");
 }
 
 @using (Html.BeginForm("Index", "Movie", FormMethod.Get, new { @class = "form-inline", @style = "margin-top: 10px; margin-bottom: 10px;" }))
@@ -44,6 +46,12 @@
                 <td>@movie.Description</td>
                 <td>@movie.Genre</td>
                 <td id="availableDVDs">@movie.DVDs.Where(dvd => dvd.IsAvailable).Count()</td>
+                <td>
+                    @foreach (var item in movie.TestItems)
+                    {
+                        <input type="radio" name="test-items" value="@item.Value" />@item.Text <br />
+                    }
+                </td>
                 @if (movie.DVDs.Where(dvd => dvd.IsAvailable).Count() > 0 && User.IsInRole("Admin"))
                 {
                     <td>@Html.ActionLink("Κράτηση ταινίας", "CreateFromMovieList", "Booking", new { area = "Bookings", movieId = movie.Id }, new { @class = "btn btn-success" })</td>
@@ -58,6 +66,10 @@
         }
     </tbody>
 </table>
+
+<div>
+    @Html.ActionLink("Press the link", "Link", new VideoClub.Web.Areas.Movies.Models.MovieViewModel())
+</div>
 
 @if (Model.TotalPagesCount != 0)
 {
@@ -91,6 +103,8 @@
 }
 
 @section scripts{
+    @*<script src="@Url.Content("~/scripts/movie-form.js")"></script>*@
+
     <script>
         var href = new URL(window.location.href); // Saves current URL link to a variable with all (if any) of it's parameters. ex. ?page=1
 

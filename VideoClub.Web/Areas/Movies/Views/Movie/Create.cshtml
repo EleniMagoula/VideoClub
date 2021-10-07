@@ -36,5 +36,10 @@
         @Html.ValidationMessageFor(m => m.AvailableDVDs)
     </div>
 
+    <div class="form-group">
+        <label for="NumberOfInstallments">Test</label>
+        @Html.RadioButtonFor(m => m.TestItem, Model.TestItems, new { id = "TestItem", @class = "" })
+    </div>
+
     <button type="submit" class="btn btn-primary">Αποθήκευση ταινίας</button>
 }

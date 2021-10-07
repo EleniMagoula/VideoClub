@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using VideoClub.Core.Constants;
 using VideoClub.Core.Entities;
@@ -53,7 +52,8 @@ namespace VideoClub.Web.Areas.Movies.Controllers
                     Title = paginationItem.Title,
                     Description = paginationItem.Description,
                     Genre = paginationItem.Genre,
-                    DVDs = paginationItem.DVDs
+                    DVDs = paginationItem.DVDs,
+                    TestItems = new List<SelectListItem>() { new SelectListItem() { Text = "some text", Value = "some value" } }
                 });
             }
 
@@ -63,6 +63,25 @@ namespace VideoClub.Web.Areas.Movies.Controllers
             return View(paginationViewModel);
         }
 
+
+        public ActionResult List(MovieViewModel model)
+        {
+            model.Title = "test title";
+            model.Description = "test description";
+            model.Genre = MovieGenre.Αστυνομική;
+
+            return View(model);
+        }
+
+        [Authorize(Roles = RoleName.Admin)]
+        public ActionResult RenderCreate()
+        {
+            var genres = GetMovieGenres();
+
+            var model = new MovieBindingModel() { Genres = new SelectList(genres) };
+            return PartialView("~/Areas/Movies/Views/Movie/_CreateForm.cshtml", model);
+        }
+
         [Authorize(Roles = RoleName.Admin)]
         public ActionResult Create()
         {
@@ -70,7 +89,12 @@ namespace VideoClub.Web.Areas.Movies.Controllers
 
             var movieForm = new MovieBindingModel
             {
-                Genres = new SelectList(genresList)
+                Genres = new SelectList(genresList),
+                TestItems = new List<SelectListItem>() 
+                { 
+                    new SelectListItem() { Text = "some text", Value = "some value" }, 
+                    new SelectListItem() { Text = "some other text", Value = "some other value" } 
+                }
             };
 
             return View(movieForm);

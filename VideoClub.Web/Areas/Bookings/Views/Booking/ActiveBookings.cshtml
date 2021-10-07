@@ -43,7 +43,7 @@ else
 @section scripts {
     <script>
         $(document).ready(function () {
-            $(".js-booking-returned").click(function (e) {
+            $('.js-booking-returned').on('click', function (e) {
                 var button = $(e.target);
 
                 bootbox.dialog({
@@ -65,18 +65,18 @@ else
                             className: 'btn-danger',
                             callback: function () {
                                 $.ajax({
-                                    url: "@Url.Action("Return", "Booking", new { Area = "Bookings" })",
-                                    method: "POST",
-                                    data: { bookingId: button.attr("data-booking-id") }
+                                    url: '@Url.Action("Return", "Booking", new { Area = "Bookings" })',
+                                    method: 'POST',
+                                    data: { bookingId: button.attr('data-booking-id') }
                                 })
                                     .done(function (response) {
-                                        button.parents("tr").fadeOut(function () {
+                                        button.parents('tr').fadeOut(function () {
                                             bootbox.alert(response.msg);
                                             $(this).remove;
                                         });
                                     })
                                     .fail(function () {
-                                        bootbox.alert("Επιστροφή απέτυχε. Προσπαθήστε αργότερα.");
+                                        bootbox.alert('Επιστροφή απέτυχε. Προσπαθήστε αργότερα.');
                                     });
                             }
                         }

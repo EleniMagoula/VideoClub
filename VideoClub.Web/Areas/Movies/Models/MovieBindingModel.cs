@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using VideoClub.Core.Enums;
@@ -25,6 +26,11 @@ namespace VideoClub.Web.Areas.Movies.Models
         public int AvailableDVDs { get; set; }
 
         public SelectList Genres { get; set; }
+
+        public string TestItem { get; set; }
+
+        public List<SelectListItem> TestItems { get; set; }
+
 
         public MovieBindingModel()
         { }
